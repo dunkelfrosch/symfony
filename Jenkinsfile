@@ -73,7 +73,7 @@
 
              sh 'cd "$WORKSPACE"'
              sh 'echo -e "running tests in $(pwd)"'
-             sh 'sudo docker run -v -t "$(pwd)":"$(pwd)" df/php /bin/bash -c "cd $(pwd) && php phpunit"'
+             sh 'sudo docker run -t -v "$(pwd)":"$(pwd)" df/php:latest /bin/bash -c "cd $(pwd) && php phpunit"'
          }
 
          stage('Cleanup') {
