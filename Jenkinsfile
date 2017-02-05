@@ -35,7 +35,7 @@
          stage('Code Provision') {
 
             sh '"$WORKSPACE/build/jenkins/get_composer.sh"'
-            sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "php build/jenkins/composer-setup.php --filename=composer --install-dir=bin"'
+            sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "php $WORKSPACE/build/jenkins/composer-setup.php --filename=composer --install-dir=bin"'
             sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "composer --version"'
          }
 
