@@ -11,7 +11,8 @@
 
          stage('Prepare Workspace') {
 
-            dir($WORKSPACE) {
+            def build = Thread.currentThread().executable
+            dir(build.workspace.toString()) {
                 deleteDir()
             }
          }
