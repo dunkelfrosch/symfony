@@ -36,7 +36,7 @@
 
             sh 'cd "$WORKSPACE/build/jenkins" && ./get_composer.sh && cd "$WORKSPACE"'
             sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "php $WORKSPACE/build/jenkins/composer-setup.php --filename=composer --install-dir=$WORKSPACE"'
-            sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "$WORKSPACE/composer update"'
+            sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "cd $WORKSPACE && composer update"'
          }
 
          stage('Code Checks') {
@@ -47,14 +47,12 @@
 
                  'phplint 7.1.n': {
 
-                     sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "php -v && php -m"'
                      sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "find -L `pwd`/src -path */Tests/* -prune -o -name *.php -print0 | xargs -0 -n 1 -P 4 php -l" > ./phplint71.txt'
                      archiveArtifacts 'phplint71.txt'
                  },
 
                  'phplint 7.0.n': {
 
-                     sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.0-cli /bin/bash -c "php -v && php -m"'
                      sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.0-cli /bin/bash -c "find -L `pwd`/src -path */Tests/* -prune -o -name *.php -print0 | xargs -0 -n 1 -P 4 php -l"  > ./phplint70.txt'
                      archiveArtifacts 'phplint70.txt'
                  }
