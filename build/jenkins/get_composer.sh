@@ -34,4 +34,4 @@ else
 fi
 
 echo -e "_ preparation : ---- install composer binary"
-php "${COMPOSER_SETUP_FILE} --filename=${COMPOSER_FILE} --install-dir=${WORKSPACE}"
+php ${COMPOSER_SETUP_FILE} --filename=${COMPOSER_FILE} --install-dir=${WORKSPACE}
