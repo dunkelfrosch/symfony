@@ -1,5 +1,7 @@
 #!/usr/bin/env groovy
 
+import hudson.model.*
+
 /**
  * sample pipeline for check/test/run symfony 3.2 CI
  */
@@ -69,9 +71,10 @@
 
          stage('Code Tests') {
 
-             def regexStr = "s/\e\[?.*?[\@-~]//g"
+             /* php phpunit | perl -pe 's/\e\[?.*?[\@-~]//g' */
+
              sh 'cd "$WORKSPACE"'
-             sh 'sudo docker run -t -v "$(pwd)":"$(pwd)" df/php:latest /bin/bash -c "cd $(pwd) && php phpunit | perl -pe ${REGX} "'
+             sh 'sudo docker run -t -v "$(pwd)":"$(pwd)" df/php:latest /bin/bash -c "$(pwd)/build/jenkins/run_phpunit.sh"'
          }
 
          stage('Cleanup') {
