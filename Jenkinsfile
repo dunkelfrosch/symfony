@@ -74,7 +74,7 @@ import hudson.model.*
              /* php phpunit | perl -pe 's/\e\[?.*?[\@-~]//g' */
 
              sh 'cd "$WORKSPACE"'
-             sh 'sudo docker run -t -v "$(pwd)":"$(pwd)" df/php:latest /bin/bash -c "$(pwd)/build/jenkins/run_phpunit.sh ${$WORKSPACE}"'
+             sh 'sudo docker run -t -v "$(pwd)":"$(pwd)" df/php:latest /bin/bash -c "$(pwd)/build/jenkins/run_phpunit.sh ${WORKSPACE}"'
          }
 
          stage('Cleanup') {
