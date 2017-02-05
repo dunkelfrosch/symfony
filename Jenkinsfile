@@ -9,18 +9,27 @@
 
      try {
 
+         stage('Code Provision') {
+
+            sh 'cd "$WORKSPACE/build/jenkins"'
+            sh './get_composer.sh'
+            sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "php composer-setup.php --filename=composer --install-dir=bin"'
+            sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "composer --version"'
+         }
+
          stage('Code Checks') {
 
              sh 'cd "$WORKSPACE"'
 
              parallel (
+
                  'phplint 7.1.n': {
 
-                     sh 'pwd'
                      sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "php -v && php -m"'
                      sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "find -L `pwd`/src -path */Tests/* -prune -o -name *.php -print0 | xargs -0 -n 1 -P 4 php -l" > ./phplint71.txt'
                      archiveArtifacts 'phplint71.txt'
                  },
+
                  'phplint 7.0.n': {
 
                      sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.0-cli /bin/bash -c "php -v && php -m"'
