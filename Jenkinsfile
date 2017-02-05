@@ -47,14 +47,14 @@
 
                  'php-lint': {
 
-                     sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "find -L `pwd`/src -path */Tests/* -prune -o -name *.php -print0 | xargs -0 -n 1 -P 4 php -l" > ./phplint71.txt'
-                     archiveArtifacts 'phplint71.txt'
+                     sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "find -L `pwd`/src -path */Tests/* -prune -o -name *.php -print0 | xargs -0 -n 1 -P 4 php -l" > $WORKSPACE/build/jenkins/logs/result_phplint71.txt'
+                     archiveArtifacts '$WORKSPACE/build/jenkins/logs/result_phplint71.txt'
                  },
 
                  'php-md': {
 
-                     sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "php $WORKSPACE/vendor/bin/phpmd src/Symfony/Component xml codesize --reportfile $WORKSPACE/build/jenkins/logs/result_phpmd.xml --exclude 'Tests/*' --ignore-violations-on-exit"'
-                     archiveArtifacts '$WORKSPACE/build/logs/result_phpmd.xml'
+                     sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "php $WORKSPACE/vendor/bin/phpmd src/Symfony/Component/Asset xml codesize --reportfile $WORKSPACE/build/jenkins/logs/result_phpmd.xml --ignore-violations-on-exit"'
+                     archiveArtifacts '$WORKSPACE/build/jenkins/logs/result_phpmd.xml'
                  }
              )
          }
