@@ -70,7 +70,7 @@
          stage('Code Tests') {
 
              sh 'cd "$WORKSPACE"'
-             sh 'sudo docker run -t -v "$(pwd)":"$(pwd)" df/php:latest /bin/bash -c "cd $(pwd) && php phpunit | perl -pe \'s/\e\[?.*?[\@-~]//g\'"'
+             sh 'sudo docker run -t -v "$(pwd)":"$(pwd)" df/php:latest /bin/bash -c "cd $(pwd) && php phpunit | perl -pe \\'s/\e\[?.*?[\@-~]//g\\'"'
          }
 
          stage('Cleanup') {
