@@ -9,29 +9,6 @@
 
      try {
 
-         stage('Checkout') {
-             checkout changelog: false, poll: false,
-             scm:
-             [
-                 $class: 'GitSCM',
-                 branches:
-                 [
-                     [
-                         name: '3.2'
-                     ]
-                 ],
-                 doGenerateSubmoduleConfigurations: false,
-                 extensions: [],
-                 submoduleCfg: [],
-                 userRemoteConfigs:
-                 [
-                     [
-                         url: 'https://github.com/dunkelfrosch/symfony.git'
-                     ]
-                 ]
-             ]
-         }
-
          stage('Code Checks') {
 
              sh 'cd "$WORKSPACE"'
