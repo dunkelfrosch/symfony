@@ -33,6 +33,7 @@
          }
 
          stage('Code Provision') {
+
             sh 'sudo chown jenkins: "${WORKSPACE:-/var/lib/jenkins/workspace}" -R'
             sh 'rm -rf "$WORKSPACE"/vendor/*'
             sh '"$WORKSPACE"/build/jenkins/get_composer.sh'
@@ -47,22 +48,35 @@
 
                  'php-lint': {
 
+                     sh 'pwd'
                      sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "find -L `pwd`/src -path */Tests/* -prune -o -name *.php -print0 | xargs -0 -n 1 -P 4 php -l" > $WORKSPACE/build/jenkins/logs/result_phplint71.txt'
                      archiveArtifacts 'build/jenkins/logs/result_phplint71.txt'
+
                  },
 
                  'php-md': {
 
+                     sh 'pwd'
                      sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "php $WORKSPACE/vendor/bin/phpmd $WORKSPACE/src/Symfony/Component/Asset xml codesize --reportfile $WORKSPACE/build/jenkins/logs/result_phpmd.xml --ignore-violations-on-exit"'
                      archiveArtifacts 'build/jenkins/logs/result_phpmd.xml'
+
                  },
 
                  'php-cpd': {
 
+                    sh 'pwd'
                     sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "php -d memory_limit=512M  $WORKSPACE/vendor/bin/phpcpd $WORKSPACE/src --log-pmd $WORKSPACE/build/jenkins/logs/result_phpcpd.xml --min-lines=100"'
                     archiveArtifacts 'build/jenkins/logs/result_phpcpd.xml'
+
                  }
              )
+         }
+
+         stage('Code Tests') {
+
+             sh 'cd "$WORKSPACE"'
+             sh 'echo -e "running tests in $(pwd)"'
+             sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "php ./phpunit symfony"'
          }
 
          stage('Cleanup') {
