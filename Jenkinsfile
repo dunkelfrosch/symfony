@@ -69,7 +69,7 @@
 
          stage('Code Tests') {
 
-             def REGX = 's/\e\[?.*?[\@-~]//g'
+             def regexStr = "s/\e\[?.*?[\@-~]//g"
              sh 'cd "$WORKSPACE"'
              sh 'sudo docker run -t -v "$(pwd)":"$(pwd)" df/php:latest /bin/bash -c "cd $(pwd) && php phpunit | perl -pe ${REGX} "'
          }
