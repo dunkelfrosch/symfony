@@ -77,7 +77,7 @@
 
          stage('Cleanup') {
 
-             sh 'rm -rf $WORKSPACE/*'
+             sh 'sudo rm -rf $WORKSPACE/*'
          }
 
      } catch (err) {
