@@ -5,7 +5,8 @@
 
 echo -e "_ preparation : ---- get composer installer from origin source(s)"
 echo $(pwd)
-if wget -q "https://getcomposer.org/installer" -O "composer-setup.php" > /dev/null; then
+echo $(whoami)
+if wget "https://getcomposer.org/installer" -O "composer-setup.php" > /dev/null; then
     echo -e "_ preparation : [OK] composer downloaded successfully"
 else
     echo -e "_ preparation : [FAIL] composer couldn't downloaded, operation ends here ..."
