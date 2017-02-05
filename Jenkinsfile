@@ -34,7 +34,7 @@
 
          stage('Code Provision') {
 
-            sh 'sudo chown jenkins: "${WORKSPACE:-/var/lib/jenkins/workspace}" -R
+            sh 'sudo chown jenkins: "${WORKSPACE:-/var/lib/jenkins/workspace}" -R'
             sh 'sudo docker run -t -v "$(pwd)":"$(pwd)" df/php:latest /bin/bash -c "cd $(pwd) && composer install"'
          }
 
