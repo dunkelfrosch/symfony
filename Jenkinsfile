@@ -34,10 +34,8 @@
 
          stage('Code Provision') {
 
-            sh 'sudo chown jenkins: "${WORKSPACE:-/var/lib/jenkins/workspace}" -R'
-            sh 'rm -rf "$WORKSPACE"/vendor/*'
-            sh '"$WORKSPACE"/build/jenkins/get_composer.sh'
-            sh 'cd "$WORKSPACE" && ./composer install'
+            sh 'sudo chown jenkins: "${WORKSPACE:-/var/lib/jenkins/workspace}" -R
+            sh 'sudo docker run -t -v "$(pwd)":"$(pwd)" df/php:latest /bin/bash -c "cd $(pwd) && composer install"'
          }
 
          stage('Code Checks') {
