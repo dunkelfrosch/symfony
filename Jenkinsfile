@@ -34,9 +34,9 @@
 
          stage('Code Provision') {
 
-            sh 'cd "$WORKSPACE/build/jenkins" && ./get_composer.sh && cd "$WORKSPACE"'
-            sh 'php "$WORKSPACE/build/jenkins/composer-setup.php" --filename=composer --install-dir="$WORKSPACE"'
-            sh 'cd "$WORKSPACE" && ./composer update'
+            sh '"$WORKSPACE"/build/jenkins/get_composer.sh'
+            sh 'php "$WORKSPACE"/build/jenkins/composer-setup.php --filename=composer --install-dir=.'
+            sh 'cd "$WORKSPACE" && ./composer install'
          }
 
          stage('Code Checks') {
