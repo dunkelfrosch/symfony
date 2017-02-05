@@ -5,6 +5,7 @@
     "keywords": ["framework"],
     "homepage": "https://symfony.com",
     "license": "MIT",
+    "version": "3.2",
     "authors": [
         {
             "name": "Fabien Potencier",
