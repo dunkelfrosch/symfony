@@ -35,7 +35,6 @@
          stage('Code Provision') {
             sh 'sudo chown jenkins: "${WORKSPACE:-/var/lib/jenkins/workspace}" -R'
             sh '"$WORKSPACE"/build/jenkins/get_composer.sh'
-            sh 'php "$WORKSPACE"/build/jenkins/composer-setup.php --filename=composer --install-dir=.'
             sh 'cd "$WORKSPACE" && ./composer install'
          }
 
