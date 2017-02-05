@@ -36,7 +36,7 @@
 
             sh 'cd "$WORKSPACE/build/jenkins" && ./get_composer.sh && cd "$WORKSPACE"'
             sh 'php "$WORKSPACE/build/jenkins/composer-setup.php" --filename=composer --install-dir="$WORKSPACE"'
-            sh 'cd "$WORKSPACE" && ./composer install'
+            sh 'cd "$WORKSPACE" && ./composer update'
          }
 
          stage('Code Checks') {
