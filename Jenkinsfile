@@ -78,8 +78,8 @@
 
          stage('Cleanup') {
 
-             sh 'cd "$WORKSPACE"'
-             sh 'echo -e "cleanUp stuff in $(pwd)"'
+             sh 'echo -e "cleanUp file content in $(pwd)"'
+             sh 'rm -rf $WORKSPACE/*'
          }
 
      } catch (err) {
