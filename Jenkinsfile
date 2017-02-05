@@ -36,7 +36,7 @@
 
             sh 'cd "$WORKSPACE/build/jenkins" && ./get_composer.sh && cd "$WORKSPACE"'
             sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "php $WORKSPACE/build/jenkins/composer-setup.php --filename=composer --install-dir=$WORKSPACE"'
-            sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "cd $WORKSPACE && composer update"'
+            sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "cd $WORKSPACE && ./composer update"'
          }
 
          stage('Code Checks') {
