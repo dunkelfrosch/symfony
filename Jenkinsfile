@@ -55,7 +55,7 @@
 
                      sh 'sudo docker run -v "`pwd`":"`pwd`" php:7.1-cli /bin/bash -c "php $WORKSPACE/vendor/bin/phpmd $WORKSPACE/src/Symfony/Component/Asset xml codesize --reportfile $WORKSPACE/build/jenkins/logs/result_phpmd.xml --ignore-violations-on-exit"'
                      archiveArtifacts '$WORKSPACE/build/jenkins/logs/result_phpmd.xml'
-                 }
+                 },
 
                  'php-cpd': {
 
