@@ -9,6 +9,13 @@
 
      try {
 
+         stage('Prepare Workspace') {
+
+            dir($WORKSPACE) {
+                deleteDir()
+            }
+         }
+
          stage('Checkout') {
              checkout changelog: false, poll: false,
              scm:
