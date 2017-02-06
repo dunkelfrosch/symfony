@@ -48,28 +48,28 @@ import hudson.model.*
 
                  'php-lint': {
 
-                     sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "find -L $(pwd)/src -path */Tests/* -prune -o -name *.php -print0 | xargs -0 -n 1 -P 4 php -l" > $(pwd)/build/jenkins/logs/result_phplint71.txt'
+                     sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "find -L $WORKSPACE/src -path */Tests/* -prune -o -name *.php -print0 | xargs -0 -n 1 -P 4 php -l" > $WORKSPACE/build/jenkins/logs/result_phplint71.txt'
                      archiveArtifacts 'build/jenkins/logs/result_phplint71.txt'
 
                  },
 
                  'php-md': {
 
-                     sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php -d memory_limit=512M $(pwd)/vendor/bin/phpmd $(pwd)/src/Symfony/Component/Asset xml codesize --reportfile $(pwd)/build/jenkins/logs/result_phpmd.xml --ignore-violations-on-exit --suffixes php"'
+                     sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php -d memory_limit=512M $WORKSPACE/vendor/bin/phpmd $WORKSPACE/src/Symfony/Component/Asset xml codesize --reportfile $WORKSPACE/build/jenkins/logs/result_phpmd.xml --ignore-violations-on-exit --suffixes php"'
                      archiveArtifacts 'build/jenkins/logs/result_phpmd.xml'
 
                  },
 
                  'php-cpd': {
 
-                    sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php -d memory_limit=512M $(pwd)/vendor/bin/phpcpd $WORKSPACE/src --log-pmd $(pwd)/build/jenkins/logs/result_phpcpd.xml --min-lines=100"'
+                    sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php -d memory_limit=512M $WORKSPACE/vendor/bin/phpcpd $WORKSPACE/src --log-pmd $WORKSPACE/build/jenkins/logs/result_phpcpd.xml --min-lines=100"'
                     archiveArtifacts 'build/jenkins/logs/result_phpcpd.xml'
 
                  },
 
                  'php-cs': {
 
-                    sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php $(pwd)/vendor/bin/phpcs --encoding=utf-8 --extensions=php --report=checkstyle --no-colors --report-file=$(pwd)/build/jenkins/logs/result_phpcs.xml $(pwd)/src"'
+                    sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php $WORKSPACE/vendor/bin/phpcs --encoding=utf-8 --extensions=php --report=checkstyle --no-colors --report-file=$WORKSPACE/build/jenkins/logs/result_phpcs.xml $WORKSPACE/src"'
                     archiveArtifacts 'build/jenkins/logs/result_phpcs.xml'
 
                  }
