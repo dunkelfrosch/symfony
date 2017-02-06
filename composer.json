@@ -28,7 +28,8 @@
         "symfony/polyfill-php70": "~1.0",
         "symfony/polyfill-util": "~1.0",
         "phpmd/phpmd": "^2.6",
-        "sebastian/phpcpd": "^3.0"
+        "sebastian/phpcpd": "^3.0",
+        "squizlabs/php_codesniffer": "^2.8"
     },
     "replace": {
         "symfony/asset": "self.version",
