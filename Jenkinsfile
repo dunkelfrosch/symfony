@@ -69,7 +69,7 @@ import hudson.model.*
 
                  'php-cs': {
 
-                    sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php $WORKSPACE/vendor/bin/phpcs --encoding=utf-8 --extensions=php --report=checkstyle --no-colors --report-file=$WORKSPACE/build/jenkins/logs/result_phpcs.xml $WORKSPACE/src"'
+                    sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php $WORKSPACE/vendor/bin/phpcs --encoding=utf-8 --extensions=php --report=checkstyle --no-colors --ignore=*/Tests/*,*/Fixtures/*,*/cache/* --severity=30 --report-file=$WORKSPACE/build/jenkins/logs/result_phpcs.xml $WORKSPACE/src"'
                     archiveArtifacts 'build/jenkins/logs/result_phpcs.xml'
 
                  }
