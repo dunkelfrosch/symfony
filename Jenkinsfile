@@ -42,34 +42,34 @@ import hudson.model.*
 
          stage('Code Checks') {
 
-             sh 'cd "$WORKSPACE"'
+             sh 'cd "${WORKSPACE}"'
 
              parallel (
 
                  'php-lint': {
 
-                     sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "find -L $WORKSPACE/src -path */Tests/* -prune -o -name *.php -print0 | xargs -0 -n 1 -P 4 php -l" > $WORKSPACE/build/jenkins/logs/result_phplint71.txt'
+                     sh 'cd "${WORKSPACE}" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "find -L ${WORKSPACE}/src -path */Tests/* -prune -o -name *.php -print0 | xargs -0 -n 1 -P 4 php -l" > ${WORKSPACE}/build/jenkins/logs/result_phplint71.txt'
                      archiveArtifacts 'build/jenkins/logs/result_phplint71.txt'
 
                  },
 
                  'php-md': {
 
-                     sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php -d memory_limit=512M $WORKSPACE/vendor/bin/phpmd $WORKSPACE/src/Symfony/Component/Asset xml codesize --reportfile $WORKSPACE/build/jenkins/logs/result_phpmd.xml --ignore-violations-on-exit --suffixes php"'
+                     sh 'cd "${WORKSPACE}" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php -d memory_limit=512M ${WORKSPACE}/vendor/bin/phpmd ${WORKSPACE}/src/Symfony/Component/Asset xml codesize --reportfile ${WORKSPACE}/build/jenkins/logs/result_phpmd.xml --ignore-violations-on-exit --suffixes php"'
                      archiveArtifacts 'build/jenkins/logs/result_phpmd.xml'
 
                  },
 
                  'php-cpd': {
 
-                    sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php -d memory_limit=512M $WORKSPACE/vendor/bin/phpcpd $WORKSPACE/src --log-pmd $WORKSPACE/build/jenkins/logs/result_phpcpd.xml --min-lines=100"'
+                    sh 'cd "${WORKSPACE}" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php -d memory_limit=512M ${WORKSPACE}/vendor/bin/phpcpd ${WORKSPACE}/src --log-pmd ${WORKSPACE}/build/jenkins/logs/result_phpcpd.xml --min-lines=100"'
                     archiveArtifacts 'build/jenkins/logs/result_phpcpd.xml'
 
                  },
 
                  'php-cs': {
 
-                    sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php $WORKSPACE/vendor/bin/phpcs --encoding=utf-8 --extensions=php --report=checkstyle --no-colors --ignore=*/Tests/*,*/Fixtures/*,*/cache/* --severity=30 --report-file=$WORKSPACE/build/jenkins/logs/result_phpcs.xml $WORKSPACE/src"'
+                    sh 'cd "${WORKSPACE}" && sudo docker run -t -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "${WORKSPACE}/build/jenkins/run_phpcs.sh ${WORKSPACE}/src ${WORKSPACE}/build/jenkins/logs/result_phpcs.xml"'
                     archiveArtifacts 'build/jenkins/logs/result_phpcs.xml'
 
                  }
@@ -78,15 +78,13 @@ import hudson.model.*
 
          stage('Code Tests') {
 
-             /* php phpunit | perl -pe 's/\e\[?.*?[\@-~]//g' */
+             sh 'cd "${WORKSPACE}" && sudo docker run -t -v "$(pwd)":"$(pwd)" df/php:latest /bin/bash -c "${WORKSPACE}/build/jenkins/run_phpunit.sh ${WORKSPACE}"'
 
-             sh 'cd "$WORKSPACE"'
-             sh 'sudo docker run -t -v "$(pwd)":"$(pwd)" df/php:latest /bin/bash -c "$(pwd)/build/jenkins/run_phpunit.sh ${WORKSPACE}"'
          }
 
          stage('Cleanup') {
 
-             sh 'sudo rm -rf $WORKSPACE/*'
+             sh 'sudo rm -rf ${WORKSPACE}/*'
          }
 
      } catch (err) {
