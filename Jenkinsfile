@@ -55,7 +55,7 @@ import hudson.model.*
 
                  'php-md': {
 
-                     sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php $(pwd)/vendor/bin/phpmd $(pwd)/src/Symfony/Component/Asset xml codesize --reportfile $(pwd)/build/jenkins/logs/result_phpmd.xml --ignore-violations-on-exit"'
+                     sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php -d memory_limit=512M $(pwd)/vendor/bin/phpmd $(pwd)/src/Symfony/Component/Asset xml codesize --reportfile $(pwd)/build/jenkins/logs/result_phpmd.xml --ignore-violations-on-exit --suffixes php"'
                      archiveArtifacts 'build/jenkins/logs/result_phpmd.xml'
 
                  },
@@ -64,6 +64,13 @@ import hudson.model.*
 
                     sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php -d memory_limit=512M $(pwd)/vendor/bin/phpcpd $WORKSPACE/src --log-pmd $(pwd)/build/jenkins/logs/result_phpcpd.xml --min-lines=100"'
                     archiveArtifacts 'build/jenkins/logs/result_phpcpd.xml'
+
+                 },
+
+                 'php-cs': {
+
+                    sh 'cd "$WORKSPACE" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php $(pwd)/vendor/bin/phpcs --encoding=utf-8 --extensions=php --report=checkstyle --report-file=$(pwd)/build/jenkins/logs/result_phpcs.xml src/Symfony/Bridge"'
+                    archiveArtifacts 'build/jenkins/logs/result_phpcs.xml'
 
                  }
              )
