@@ -48,28 +48,28 @@ import hudson.model.*
 
                  'php-lint': {
 
-                     sh 'cd "${WORKSPACE}" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "find -L ${WORKSPACE}/src -path */Tests/* -prune -o -name *.php -print0 | xargs -0 -n 1 -P 4 php -l" > ${WORKSPACE}/build/jenkins/logs/result_phplint71.txt'
+                     sh 'cd "${WORKSPACE}" && sudo docker run -v "$(pwd)":"$(pwd)" jenkins/df/alpine/stack/php:7.1.1 /bin/bash -c "find -L ${WORKSPACE}/src -path */Tests/* -prune -o -name *.php -print0 | xargs -0 -n 1 -P 4 php -l" > ${WORKSPACE}/build/jenkins/logs/result_phplint71.txt'
                      archiveArtifacts 'build/jenkins/logs/result_phplint71.txt'
 
                  },
 
                  'php-md': {
 
-                     sh 'cd "${WORKSPACE}" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php -d memory_limit=512M ${WORKSPACE}/vendor/bin/phpmd ${WORKSPACE}/src/Symfony/Component/Asset xml codesize --reportfile ${WORKSPACE}/build/jenkins/logs/result_phpmd.xml --ignore-violations-on-exit --suffixes php"'
+                     sh 'cd "${WORKSPACE}" && sudo docker run -v "$(pwd)":"$(pwd)" jenkins/df/alpine/stack/php:7.1.1 /bin/bash -c "php -d memory_limit=512M ${WORKSPACE}/vendor/bin/phpmd ${WORKSPACE}/src/Symfony/Component/Asset xml codesize --reportfile ${WORKSPACE}/build/jenkins/logs/result_phpmd.xml --ignore-violations-on-exit --suffixes php"'
                      archiveArtifacts 'build/jenkins/logs/result_phpmd.xml'
 
                  },
 
                  'php-cpd': {
 
-                    sh 'cd "${WORKSPACE}" && sudo docker run -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "php -d memory_limit=512M ${WORKSPACE}/vendor/bin/phpcpd ${WORKSPACE}/src --log-pmd ${WORKSPACE}/build/jenkins/logs/result_phpcpd.xml --min-lines=100"'
+                    sh 'cd "${WORKSPACE}" && sudo docker run -v "$(pwd)":"$(pwd)" jenkins/df/alpine/stack/php:7.1.1 /bin/bash -c "php -d memory_limit=512M ${WORKSPACE}/vendor/bin/phpcpd ${WORKSPACE}/src --log-pmd ${WORKSPACE}/build/jenkins/logs/result_phpcpd.xml --min-lines=100"'
                     archiveArtifacts 'build/jenkins/logs/result_phpcpd.xml'
 
                  },
 
                  'php-cs': {
 
-                    sh 'cd "${WORKSPACE}" && sudo docker run -t -v "$(pwd)":"$(pwd)" php:7.1-cli /bin/bash -c "${WORKSPACE}/build/jenkins/run_phpcs.sh ${WORKSPACE} ${WORKSPACE}/src ${WORKSPACE}/build/jenkins/logs/result_phpcs.xml"'
+                    sh 'cd "${WORKSPACE}" && sudo docker run -t -v "$(pwd)":"$(pwd)" jenkins/df/alpine/stack/php:7.1.1 /bin/bash -c "${WORKSPACE}/build/jenkins/run_phpcs.sh ${WORKSPACE} ${WORKSPACE}/src ${WORKSPACE}/build/jenkins/logs/result_phpcs.xml"'
                     archiveArtifacts 'build/jenkins/logs/result_phpcs.xml'
 
                  }
@@ -78,7 +78,7 @@ import hudson.model.*
 
          stage('Code Tests') {
 
-             sh 'cd "${WORKSPACE}" && sudo docker run -t -v "$(pwd)":"$(pwd)" df/php:latest /bin/bash -c "${WORKSPACE}/build/jenkins/run_phpunit.sh ${WORKSPACE}"'
+             sh 'cd "${WORKSPACE}" && sudo docker run -t -v "$(pwd)":"$(pwd)" jenkins/df/alpine/stack/php:7.1.1 /bin/bash -c "${WORKSPACE}/build/jenkins/run_phpunit.sh ${WORKSPACE}"'
 
          }
 
