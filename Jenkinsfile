@@ -4,6 +4,9 @@ import hudson.model.*
 
 /**
  * sample pipeline for check/test/run symfony 3.2 CI
+ *
+ * - please always check currently running Jenkins-File definition on jenkins pipe! Transfer changes of jenkins based
+ *   file to this one before using scm based configuration!
  */
  node {
 
