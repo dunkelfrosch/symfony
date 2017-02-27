@@ -30,6 +30,8 @@ class MongoDbSessionHandlerTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
+        $this->markTestSkipped('skipped/disabled during pipeline tests');
+
         if (!extension_loaded('mongo') && !extension_loaded('mongodb')) {
             $this->markTestSkipped('The Mongo or MongoDB extension is required.');
         }
