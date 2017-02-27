@@ -74,7 +74,7 @@
 
     <logging>
         <log type="junit" target="./build/jenkins/logs/result_phpunit.xml" logIncompleteSkipped="false"/>
-        <log type="coverage-clover" target="./build/jenkins/logs/result_phpunit.coverage.xml"/>
+        <log type="coverage-clover" target="./build/jenkins/logs/result_phpunit.coverage.xml" logIncompleteSkipped="false"/>
         <log type="coverage-php" target="./build/jenkins/logs/result_phpunit.coverage.serialized"/>
         <log type="testdox-html" target="./build/jenkins/logs/result_phpunit.testdox.html"/>
         <log type="testdox-text" target="./build/jenkins/logs/result_phpunit.testdox.txt"/>
