@@ -74,17 +74,6 @@ class InlineTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @group legacy
-     * @dataProvider getTestsForParseWithMapObjects
-     */
-    public function testParseWithMapObjectsPassingTrue($yaml, $value)
-    {
-        $actual = Inline::parse($yaml, false, false, true);
-
-        $this->assertSame(serialize($value), serialize($actual));
-    }
-
-    /**
      * @dataProvider getTestsForDump
      */
     public function testDump($yaml, $value)
@@ -167,16 +156,6 @@ class InlineTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @group legacy
-     * @expectedDeprecation Using a colon that is not followed by an indication character (i.e. " ", ",", "[", "]", "{", "}" is deprecated since version 3.2 and will throw a ParseException in 4.0.
-     * throws \Symfony\Component\Yaml\Exception\ParseException in 4.0
-     */
-    public function testParseMappingKeyWithColonNotFollowedBySpace()
-    {
-        Inline::parse('{1:""}');
-    }
-
-    /**
      * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      */
     public function testParseInvalidMappingShouldThrowException()
@@ -208,15 +187,6 @@ class InlineTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, Inline::parse($yaml, 0, array('var' => 'var-value')));
     }
 
-    /**
-     * @group legacy
-     * @dataProvider getDataForParseReferences
-     */
-    public function testParseReferencesAsFifthArgument($yaml, $expected)
-    {
-        $this->assertSame($expected, Inline::parse($yaml, false, false, false, array('var' => 'var-value')));
-    }
-
     public function getDataForParseReferences()
     {
         return array(
@@ -239,19 +209,6 @@ class InlineTest extends \PHPUnit_Framework_TestCase
             'c' => 'Brian',
         );
         $this->assertSame(array($foo), Inline::parse('[*foo]', 0, array('foo' => $foo)));
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testParseMapReferenceInSequenceAsFifthArgument()
-    {
-        $foo = array(
-            'a' => 'Steve',
-            'b' => 'Clark',
-            'c' => 'Brian',
-        );
-        $this->assertSame(array($foo), Inline::parse('[*foo]', false, false, false, array('foo' => $foo)));
     }
 
     /**
@@ -300,16 +257,6 @@ class InlineTest extends \PHPUnit_Framework_TestCase
     public function getScalarIndicators()
     {
         return array(array('|'), array('>'));
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Not quoting the scalar "%bar " starting with the "%" indicator character is deprecated since Symfony 3.1 and will throw a ParseException in 4.0.
-     * throws \Symfony\Component\Yaml\Exception\ParseException in 4.0
-     */
-    public function testParseUnquotedScalarStartingWithPercentCharacter()
-    {
-        Inline::parse('{ foo: %bar }');
     }
 
     /**

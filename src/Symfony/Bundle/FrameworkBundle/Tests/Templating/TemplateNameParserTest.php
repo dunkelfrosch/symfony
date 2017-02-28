@@ -82,20 +82,6 @@ class TemplateNameParserTest extends TestCase
         $this->parser->parse('BarBundle:Post:index.html.php');
     }
 
-    /**
-     * @group legacy
-     * @dataProvider provideAbsolutePaths
-     * @expectedDeprecation Absolute template path support is deprecated since Symfony 3.1 and will be removed in 4.0.
-     */
-    public function testAbsolutePathsAreDeprecated($name, $logicalName, $path, $ref)
-    {
-        $template = $this->parser->parse($name);
-
-        $this->assertSame($ref->getLogicalName(), $template->getLogicalName());
-        $this->assertSame($logicalName, $template->getLogicalName());
-        $this->assertSame($path, $template->getPath());
-    }
-
     public function provideAbsolutePaths()
     {
         return array(

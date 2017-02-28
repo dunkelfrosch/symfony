@@ -1091,24 +1091,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('some test value', $extraValue);
     }
 
-    /**
-     * @group legacy
-     */
-    public function testTerminalDimensions()
-    {
-        $application = new Application();
-        $originalDimensions = $application->getTerminalDimensions();
-        $this->assertCount(2, $originalDimensions);
-
-        $width = 80;
-        if ($originalDimensions[0] == $width) {
-            $width = 100;
-        }
-
-        $application->setTerminalDimensions($width, 80);
-        $this->assertSame(array($width, 80), $application->getTerminalDimensions());
-    }
-
     protected function getDispatcher($skipCommand = false)
     {
         $dispatcher = new EventDispatcher();

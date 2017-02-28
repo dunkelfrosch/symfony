@@ -60,20 +60,6 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation The "deprecated_foo" service is deprecated. You should stop using it, as it will soon be removed.
-     */
-    public function testCreateDeprecatedService()
-    {
-        $definition = new Definition('stdClass');
-        $definition->setDeprecated(true);
-
-        $builder = new ContainerBuilder();
-        $builder->setDefinition('deprecated_foo', $definition);
-        $builder->get('deprecated_foo');
-    }
-
     public function testRegister()
     {
         $builder = new ContainerBuilder();

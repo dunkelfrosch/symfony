@@ -50,59 +50,6 @@ class FormLoginAuthenticatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::LOGIN_URL, $failureResponse->getTargetUrl());
     }
 
-    /**
-     * @group legacy
-     */
-    public function testAuthenticationSuccessWithoutSession()
-    {
-        $token = $this->getMockBuilder('Symfony\\Component\\Security\\Core\\Authentication\\Token\\TokenInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $redirectResponse = $this->authenticator->onAuthenticationSuccess($this->requestWithoutSession, $token, 'providerkey');
-
-        $this->assertInstanceOf('Symfony\\Component\\HttpFoundation\\RedirectResponse', $redirectResponse);
-        $this->assertEquals(self::DEFAULT_SUCCESS_URL, $redirectResponse->getTargetUrl());
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testAuthenticationSuccessWithSessionButEmpty()
-    {
-        $token = $this->getMockBuilder('Symfony\\Component\\Security\\Core\\Authentication\\Token\\TokenInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->requestWithSession->getSession()
-            ->expects($this->once())
-            ->method('get')
-            ->will($this->returnValue(null));
-
-        $redirectResponse = $this->authenticator->onAuthenticationSuccess($this->requestWithSession, $token, 'providerkey');
-
-        $this->assertInstanceOf('Symfony\\Component\\HttpFoundation\\RedirectResponse', $redirectResponse);
-        $this->assertEquals(self::DEFAULT_SUCCESS_URL, $redirectResponse->getTargetUrl());
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testAuthenticationSuccessWithSessionAndTarget()
-    {
-        $token = $this->getMockBuilder('Symfony\\Component\\Security\\Core\\Authentication\\Token\\TokenInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->requestWithSession->getSession()
-            ->expects($this->once())
-            ->method('get')
-            ->will($this->returnValue(self::CUSTOM_SUCCESS_URL));
-
-        $redirectResponse = $this->authenticator->onAuthenticationSuccess($this->requestWithSession, $token, 'providerkey');
-
-        $this->assertInstanceOf('Symfony\\Component\\HttpFoundation\\RedirectResponse', $redirectResponse);
-        $this->assertEquals(self::CUSTOM_SUCCESS_URL, $redirectResponse->getTargetUrl());
-    }
-
     public function testRememberMe()
     {
         $doSupport = $this->authenticator->supportsRememberMe();

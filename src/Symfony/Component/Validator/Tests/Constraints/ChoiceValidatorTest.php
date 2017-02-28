@@ -262,22 +262,6 @@ class ChoiceValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    /**
-     * @group legacy
-     */
-    public function testNonStrict()
-    {
-        $constraint = new Choice(array(
-            'choices' => array(1, 2),
-            'strict' => false,
-        ));
-
-        $this->validator->validate('2', $constraint);
-        $this->validator->validate(2, $constraint);
-
-        $this->assertNoViolation();
-    }
-
     public function testStrictAllowsExactValue()
     {
         $constraint = new Choice(array(
@@ -304,22 +288,6 @@ class ChoiceValidatorTest extends ConstraintValidatorTestCase
             ->setParameter('{{ value }}', '"2"')
             ->setCode(Choice::NO_SUCH_CHOICE_ERROR)
             ->assertRaised();
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testNonStrictWithMultipleChoices()
-    {
-        $constraint = new Choice(array(
-            'choices' => array(1, 2, 3),
-            'multiple' => true,
-            'strict' => false,
-        ));
-
-        $this->validator->validate(array('2', 3), $constraint);
-
-        $this->assertNoViolation();
     }
 
     public function testStrictWithMultipleChoices()

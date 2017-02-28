@@ -466,30 +466,6 @@ EOF;
     }
 
     /**
-     * @group legacy
-     */
-    public function testObjectSupportEnabledPassingTrue()
-    {
-        $input = <<<'EOF'
-foo: !php/object:O:30:"Symfony\Component\Yaml\Tests\B":1:{s:1:"b";s:3:"foo";}
-bar: 1
-EOF;
-        $this->assertEquals(array('foo' => new B(), 'bar' => 1), $this->parser->parse($input, false, true), '->parse() is able to parse objects');
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testObjectSupportEnabledWithDeprecatedTag()
-    {
-        $input = <<<'EOF'
-foo: !!php/object:O:30:"Symfony\Component\Yaml\Tests\B":1:{s:1:"b";s:3:"foo";}
-bar: 1
-EOF;
-        $this->assertEquals(array('foo' => new B(), 'bar' => 1), $this->parser->parse($input, Yaml::PARSE_OBJECT), '->parse() is able to parse objects');
-    }
-
-    /**
      * @dataProvider invalidDumpedObjectProvider
      */
     public function testObjectSupportDisabledButNoExceptions($input)
@@ -503,15 +479,6 @@ EOF;
     public function testObjectForMap($yaml, $expected)
     {
         $this->assertEquals($expected, $this->parser->parse($yaml, Yaml::PARSE_OBJECT_FOR_MAP));
-    }
-
-    /**
-     * @group legacy
-     * @dataProvider getObjectForMapTests
-     */
-    public function testObjectForMapEnabledWithMappingUsingBooleanToggles($yaml, $expected)
-    {
-        $this->assertEquals($expected, $this->parser->parse($yaml, false, false, true));
     }
 
     public function getObjectForMapTests()
@@ -584,16 +551,6 @@ YAML;
     public function testObjectsSupportDisabledWithExceptions($yaml)
     {
         $this->parser->parse($yaml, Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
-    }
-
-    /**
-     * @group legacy
-     * @dataProvider invalidDumpedObjectProvider
-     * @expectedException \Symfony\Component\Yaml\Exception\ParseException
-     */
-    public function testObjectsSupportDisabledWithExceptionsUsingBooleanToggles($yaml)
-    {
-        $this->parser->parse($yaml, true);
     }
 
     public function invalidDumpedObjectProvider()
@@ -776,63 +733,6 @@ foo:
     foo: bar
 EOF
         );
-    }
-
-    /**
-     * > It is an error for two equal keys to appear in the same mapping node.
-     * > In such a case the YAML processor may continue, ignoring the second
-     * > `key: value` pair and issuing an appropriate warning. This strategy
-     * > preserves a consistent information model for one-pass and random access
-     * > applications.
-     *
-     * @see http://yaml.org/spec/1.2/spec.html#id2759572
-     * @see http://yaml.org/spec/1.1/#id932806
-     * @group legacy
-     */
-    public function testMappingDuplicateKeyBlock()
-    {
-        $input = <<<'EOD'
-parent:
-    child: first
-    child: duplicate
-parent:
-    child: duplicate
-    child: duplicate
-EOD;
-        $expected = array(
-            'parent' => array(
-                'child' => 'first',
-            ),
-        );
-        $this->assertSame($expected, Yaml::parse($input));
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testMappingDuplicateKeyFlow()
-    {
-        $input = <<<'EOD'
-parent: { child: first, child: duplicate }
-parent: { child: duplicate, child: duplicate }
-EOD;
-        $expected = array(
-            'parent' => array(
-                'child' => 'first',
-            ),
-        );
-        $this->assertSame($expected, Yaml::parse($input));
-    }
-
-    /**
-     * @group legacy
-     * @dataProvider getParseExceptionOnDuplicateData
-     * @expectedDeprecation Duplicate key "%s" detected on line %d whilst parsing YAML. Silent handling of duplicate mapping keys in YAML is deprecated %s.
-     * throws \Symfony\Component\Yaml\Exception\ParseException in 4.0
-     */
-    public function testParseExceptionOnDuplicate($input, $duplicateKey, $lineNumber)
-    {
-        Yaml::parse($input);
     }
 
     public function getParseExceptionOnDuplicateData()

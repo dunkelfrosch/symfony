@@ -60,30 +60,6 @@ class LazyChoiceListTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('RESULT', $this->list->getChoices());
     }
 
-    /**
-     * @group legacy
-     */
-    public function testGetChoicesUsesLoadedListWhenLoaderDoesNotCacheChoiceListOnFirstCall()
-    {
-        $this->loader->expects($this->at(0))
-            ->method('loadChoiceList')
-            ->with($this->value)
-            ->willReturn($this->loadedList);
-
-        $this->loader->expects($this->at(1))
-            ->method('loadChoiceList')
-            ->with($this->value)
-            ->willReturn(new ArrayChoiceList(array('a', 'b')));
-
-        // The same list is returned by the lazy choice list
-        $this->loadedList->expects($this->exactly(2))
-            ->method('getChoices')
-            ->will($this->returnValue('RESULT'));
-
-        $this->assertSame('RESULT', $this->list->getChoices());
-        $this->assertSame('RESULT', $this->list->getChoices());
-    }
-
     public function testGetValuesLoadsLoadedListOnFirstCall()
     {
         $this->loader->expects($this->exactly(2))
@@ -165,20 +141,6 @@ class LazyChoiceListTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame('RESULT', $this->list->getChoicesForValues(array('a', 'b')));
         $this->assertSame('RESULT', $this->list->getChoicesForValues(array('a', 'b')));
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testGetValuesForChoicesForwardsCallIfListNotLoaded()
-    {
-        $this->loader->expects($this->exactly(2))
-            ->method('loadValuesForChoices')
-            ->with(array('a', 'b'))
-            ->will($this->returnValue('RESULT'));
-
-        $this->assertSame('RESULT', $this->list->getValuesForChoices(array('a', 'b')));
-        $this->assertSame('RESULT', $this->list->getValuesForChoices(array('a', 'b')));
     }
 
     public function testGetValuesForChoicesUsesLoadedList()

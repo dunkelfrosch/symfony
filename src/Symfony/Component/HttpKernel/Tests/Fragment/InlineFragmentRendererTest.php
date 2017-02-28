@@ -52,48 +52,6 @@ class InlineFragmentRendererTest extends \PHPUnit_Framework_TestCase
         $strategy->render(new ControllerReference('main_controller', array('object' => $object), array()), Request::create('/'));
     }
 
-    /**
-     * @group legacy
-     */
-    public function testRenderWithObjectsAsAttributesPassedAsObjectsInTheControllerLegacy()
-    {
-        $resolver = $this->getMockBuilder('Symfony\\Component\\HttpKernel\\Controller\\ControllerResolver')->setMethods(array('getController'))->getMock();
-        $resolver
-            ->expects($this->once())
-            ->method('getController')
-            ->will($this->returnValue(function (\stdClass $object, Bar $object1) {
-                return new Response($object1->getBar());
-            }))
-        ;
-
-        $kernel = new HttpKernel(new EventDispatcher(), $resolver, new RequestStack());
-        $renderer = new InlineFragmentRenderer($kernel);
-
-        $response = $renderer->render(new ControllerReference('main_controller', array('object' => new \stdClass(), 'object1' => new Bar()), array()), Request::create('/'));
-        $this->assertEquals('bar', $response->getContent());
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testRenderWithObjectsAsAttributesPassedAsObjectsInTheController()
-    {
-        $resolver = $this->getMockBuilder(ControllerResolverInterface::class)->getMock();
-        $resolver
-            ->expects($this->once())
-            ->method('getController')
-            ->will($this->returnValue(function (\stdClass $object, Bar $object1) {
-                return new Response($object1->getBar());
-            }))
-        ;
-
-        $kernel = new HttpKernel(new EventDispatcher(), $resolver, new RequestStack(), new ArgumentResolver());
-        $renderer = new InlineFragmentRenderer($kernel);
-
-        $response = $renderer->render(new ControllerReference('main_controller', array('object' => new \stdClass(), 'object1' => new Bar()), array()), Request::create('/'));
-        $this->assertEquals('bar', $response->getContent());
-    }
-
     public function testRenderWithTrustedHeaderDisabled()
     {
         $trustedHeaderName = Request::getTrustedHeaderName(Request::HEADER_CLIENT_IP);

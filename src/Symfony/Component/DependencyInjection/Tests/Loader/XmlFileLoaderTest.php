@@ -556,22 +556,6 @@ class XmlFileLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($container->getDefinition('bar')->isAutowired());
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Using the attribute "class" is deprecated for the service "bar" which is defined as an alias %s.
-     * @expectedDeprecation Using the element "tag" is deprecated for the service "bar" which is defined as an alias %s.
-     * @expectedDeprecation Using the element "factory" is deprecated for the service "bar" which is defined as an alias %s.
-     */
-    public function testAliasDefinitionContainsUnsupportedElements()
-    {
-        $container = new ContainerBuilder();
-        $loader = new XmlFileLoader($container, new FileLocator(self::$fixturesPath.'/xml'));
-
-        $loader->load('legacy_invalid_alias_definition.xml');
-
-        $this->assertTrue($container->has('bar'));
-    }
-
     public function testArgumentWithKeyOutsideCollection()
     {
         $container = new ContainerBuilder();
