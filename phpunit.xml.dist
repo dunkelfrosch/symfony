@@ -15,9 +15,6 @@
         <ini name="memory_limit" value="-1" />
         <env name="DUMP_LIGHT_ARRAY" value="" />
         <env name="DUMP_STRING_LENGTH" value="" />
-        <env name="LDAP_HOST" value="127.0.0.1" />
-        <env name="LDAP_PORT" value="3389" />
-        <env name="REDIS_HOST" value="localhost" />
     </php>
 
     <testsuites>
@@ -74,9 +71,9 @@
 
     <logging>
         <log type="junit" target="./build/jenkins/logs/result_phpunit.xml" logIncompleteSkipped="false"/>
-        <log type="coverage-clover" target="./build/jenkins/logs/result_phpunit.coverage.xml" logIncompleteSkipped="false"/>
+        <!--log type="coverage-clover" target="./build/jenkins/logs/result_phpunit.coverage.xml" />
         <log type="coverage-php" target="./build/jenkins/logs/result_phpunit.coverage.serialized"/>
         <log type="testdox-html" target="./build/jenkins/logs/result_phpunit.testdox.html"/>
-        <log type="testdox-text" target="./build/jenkins/logs/result_phpunit.testdox.txt"/>
+        <log type="testdox-text" target="./build/jenkins/logs/result_phpunit.testdox.txt"/-->
     </logging>
 </phpunit>
